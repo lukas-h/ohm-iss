@@ -1,0 +1,14 @@
+{
+  "name": "ohm-iss",
+  "version": "1.0.0",
+  "description": "Your project description",
+  "main": "fetchCityData.js",
+  "scripts": {
+    "start": "node fetchCityData.js"
+  },
+  "dependencies": {
+    "nominatim-js": "^2.1.0",
+    "js-yaml": "^4.1.0",
+    "json2geojson": "^0.3.2"
+  }
+}
