@@ -99,7 +99,7 @@ function writeOutputGeojson(geoJson, filename) {
 
 // Main function
 (async () => {
-    const config = parseConfig("../nuernberg_test.yaml");
+    const config = parseConfig("nuernberg_test.yaml");
     await fetchBase(config);
     await fetchLayers(config);
 })();
