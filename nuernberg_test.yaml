@@ -1,0 +1,12 @@
+city: Nuremberg
+layers:
+- name: highways
+  operation: difference
+- name: landuse=commercial
+  operation: difference
+- name: landuse=construction
+  operation: difference
+- name: landuse=education
+  operation: difference
+- name: landuse=industrial
+  operation: difference
