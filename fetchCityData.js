@@ -1,5 +1,4 @@
 const fs = require('fs');
-const axios = require('axios');
 const { NominatimJS } = require('nominatim-js');
 const yaml = require('js-yaml');
 const { exec } = require('child_process');
@@ -62,16 +61,18 @@ async function getAreaId(cityName) {
 async function execQuery(areaId, query) {
     const request = `[out:json];area(${areaId})->.searchArea;(${query});out geom;`;
     console.log(request);
-    const response = await axios.get(OVERPASS_URL, { params: { data: request } });
-    return parse(response.data);
+    const response = await fetch(`${OVERPASS_URL}?data=${encodeURIComponent(request)}`);
+    const data = await response.json();
+    return parse(data);
 }
 
 // Execute base Overpass query and convert to GeoJSON
 async function execBaseQuery(areaId) {
     const request = `[out:json];area(${areaId})->.searchArea;rel(pivot.searchArea);out geom;`;
     console.log(request);
-    const response = await axios.get(OVERPASS_URL, { params: { data: request } });
-    return parse(response.data);
+    const response = await fetch(`${OVERPASS_URL}?data=${encodeURIComponent(request)}`);
+    const data = await response.json();
+    return parse(data);
 }
 
 // Generate Overpass query string
