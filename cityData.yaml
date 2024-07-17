@@ -5,3 +5,5 @@ layers:
 - landuse=construction
 - landuse=education
 - landuse=industrial
+- building=dormitory
+- building=government
