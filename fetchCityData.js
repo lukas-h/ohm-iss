@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { NominatimJS } = require('nominatim-js');
 const yaml = require('js-yaml');
-const osmtogeojson = require('osmtogeojson');
+const osmtogeojson = require('osm2geojson-lite');
 const axios = require('axios');
 
 const FOLDER_PREFIX = './data/';
@@ -50,7 +50,6 @@ async function execQuery(areaId, query) {
         "Content-Type": "application/xml; charset=utf-8"
     });
     const data = response.data;
-    console.log(data)
     return osmtogeojson(data);
 }
 
@@ -62,7 +61,6 @@ async function execBaseQuery(areaId) {
         "Content-Type": "application/xml; charset=utf-8"
     });
     const data =  response.data;
-    console.log(data)
     return osmtogeojson(data);
 }
 
