@@ -1,25 +1,11 @@
 const fs = require('fs');
 const { NominatimJS } = require('nominatim-js');
 const yaml = require('js-yaml');
-const { exec } = require('child_process');
-const { parse } = require('json2geojson');
+const osmtogeojson = require('osmtogeojson');
+const axios = require('axios');
 
-const FOLDER_PREFIX = '../data/';
+const FOLDER_PREFIX = './data/';
 const OVERPASS_URL = "http://overpass-api.de/api/interpreter";
-
-// Enum for operations
-const Operation = {
-    DIFFERENCE: "difference",
-    UNION: "union"
-};
-
-// Class definitions
-class ConfigLayer {
-    constructor(name, operation) {
-        this.name = name;
-        this.operation = operation;
-    }
-}
 
 class UnsealingConfig {
     constructor(layers, city) {
@@ -32,7 +18,7 @@ class UnsealingConfig {
 function parseConfig(filename) {
     const fileContents = fs.readFileSync(filename, 'utf8');
     const data = yaml.load(fileContents);
-    const layers = data.layers.map(layer => new ConfigLayer(layer.name, layer.operation));
+    const layers = data.layers;
     return new UnsealingConfig(layers, data.city);
 }
 
@@ -44,9 +30,8 @@ function fetchBase(config) {
 // Fetch layers geojson
 function fetchLayers(config) {
     config.layers.forEach(layer => {
-        console.log(layer.name);
-        console.log(layer.operation);
-        writeOutputGeojson(osmQuery([layer.name], config.city), `${FOLDER_PREFIX}${layer.name}.geojson`);
+        console.log(layer);
+        writeOutputGeojson(osmQuery([layer], config.city), `${FOLDER_PREFIX}${layer}.geojson`);
     });
 }
 
@@ -59,20 +44,26 @@ async function getAreaId(cityName) {
 
 // Execute Overpass query and convert to GeoJSON
 async function execQuery(areaId, query) {
-    const request = `[out:json];area(${areaId})->.searchArea;(${query});out geom;`;
+    const request = `area(${areaId})->.searchArea;(${query});out geom;`;
     console.log(request);
-    const response = await fetch(`${OVERPASS_URL}?data=${encodeURIComponent(request)}`);
-    const data = await response.json();
-    return parse(data);
+    const response = await axios.get(`${OVERPASS_URL}?data=${encodeURIComponent(request)}`, {
+        "Content-Type": "application/xml; charset=utf-8"
+    });
+    const data = response.data;
+    console.log(data)
+    return osmtogeojson(data);
 }
 
 // Execute base Overpass query and convert to GeoJSON
 async function execBaseQuery(areaId) {
-    const request = `[out:json];area(${areaId})->.searchArea;rel(pivot.searchArea);out geom;`;
+    const request = `area(${areaId})->.searchArea;rel(pivot.searchArea);out geom;`;
     console.log(request);
-    const response = await fetch(`${OVERPASS_URL}?data=${encodeURIComponent(request)}`);
-    const data = await response.json();
-    return parse(data);
+    const response = await axios.get(`${OVERPASS_URL}?data=${encodeURIComponent(request)}`, {
+        "Content-Type": "application/xml; charset=utf-8"
+    });
+    const data =  response.data;
+    console.log(data)
+    return osmtogeojson(data);
 }
 
 // Generate Overpass query string
@@ -99,7 +90,7 @@ function writeOutputGeojson(geoJson, filename) {
 
 // Main function
 (async () => {
-    const config = parseConfig("nuernberg_test.yaml");
+    const config = parseConfig("cityData.yaml");
     await fetchBase(config);
     await fetchLayers(config);
 })();

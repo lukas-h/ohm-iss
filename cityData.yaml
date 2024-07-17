@@ -1,0 +1,7 @@
+city: Nuremberg
+layers:
+- highways
+- landuse=commercial
+- landuse=construction
+- landuse=education
+- landuse=industrial
