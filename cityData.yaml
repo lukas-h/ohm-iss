@@ -5,3 +5,4 @@ layers:
 - landuse=construction
 - landuse=education
 - landuse=industrial
+- route=foot 
