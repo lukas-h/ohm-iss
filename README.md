@@ -6,6 +6,8 @@
 2. [Geodata Basics](https://github.com/lukas-h/ohm-iss/blob/main/geodata-basics.md)
 - [Tools Overview](https://github.com/lukas-h/ohm-iss/blob/main/tools.md)
 
+Open Street Map Features: https://wiki.openstreetmap.org/wiki/Map_features#Religious
+
 ## Linear regression: Programming and training a simple predictive models (Thu)
 
 TBD
