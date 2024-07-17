@@ -5,3 +5,8 @@ layers:
 - landuse=construction
 - landuse=education
 - landuse=industrial
+- amenity=college
+- amenity=kindergarten
+- amenity=research_institute
+- amenity=school
+- amenity=university
