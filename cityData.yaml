@@ -1,7 +1,7 @@
-city: Berlin
+city: Nuremberg
 layers:
-- highways
-- landuse=commercial
-- landuse=construction
-- landuse=education
-- landuse=industrial
+- railway=rail
+- railway=tram
+- railway=subway
+- building=residential
+- building=religious
