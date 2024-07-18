@@ -1,8 +1,9 @@
-city: Berlin
+city: Abu Dhabi
 layers:
 - highways
 - landuse=commercial
 - landuse=construction
 - landuse=education
 - landuse=industrial
-- industrial=port
+- industrial=gas
+- pipeline=substation
