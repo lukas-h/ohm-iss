@@ -1,7 +1,7 @@
 const fs = require('fs');
 const { NominatimJS } = require('nominatim-js');
 const yaml = require('js-yaml');
-const osmtogeojson = require('osmtogeojson');
+const osmtogeojson = require('osm2geojson-lite');
 const axios = require('axios');
 
 const FOLDER_PREFIX = './data/';
@@ -23,16 +23,16 @@ function parseConfig(filename) {
 }
 
 // Fetch base geojson
-function fetchBase(config) {
-    writeOutputGeojson(osmBaseQuery(config.city), `${FOLDER_PREFIX}base.geojson`);
+async function fetchBase(config) {
+    writeOutputGeojson(await osmBaseQuery(config.city), `${FOLDER_PREFIX}base.geojson`);
 }
 
 // Fetch layers geojson
-function fetchLayers(config) {
-    config.layers.forEach(layer => {
+async function fetchLayers(config) {
+    for (layer of config.layers) {
         console.log(layer);
-        writeOutputGeojson(osmQuery([layer], config.city), `${FOLDER_PREFIX}${layer}.geojson`);
-    });
+        writeOutputGeojson(await osmQuery([layer], config.city), `${FOLDER_PREFIX}${layer}.geojson`);
+    }
 }
 
 // Get area ID using Nominatim
@@ -50,7 +50,6 @@ async function execQuery(areaId, query) {
         "Content-Type": "application/xml; charset=utf-8"
     });
     const data = response.data;
-    console.log(data)
     return osmtogeojson(data);
 }
 
@@ -61,8 +60,7 @@ async function execBaseQuery(areaId) {
     const response = await axios.get(`${OVERPASS_URL}?data=${encodeURIComponent(request)}`, {
         "Content-Type": "application/xml; charset=utf-8"
     });
-    const data =  response.data;
-    console.log(data)
+    const data = response.data;
     return osmtogeojson(data);
 }
 
