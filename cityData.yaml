@@ -5,5 +5,3 @@ layers:
 - landuse=construction
 - landuse=education
 - landuse=industrial
-- industrial=gas
-- pipeline=substation
