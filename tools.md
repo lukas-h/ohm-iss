@@ -5,5 +5,5 @@
   - Inside the CodeSpace, we are using VS Code and have the latest version of Node JS preinstalled
 - Data Visualization
   - Geohub https://geohub-client.firebaseapp.com/
-  - Mapbox Studion https://studio.mapbox.com/
+  - Mapbox Studio https://studio.mapbox.com/
   - Leaflet
